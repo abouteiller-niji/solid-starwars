@@ -1,13 +1,13 @@
 import {A} from "@solidjs/router";
 import {starWarsApiBaseUrl} from "./constants";
-import {createResource, createSignal, For} from "solid-js";
+import {createResource, For} from "solid-js";
 import {lastPath} from "./helper";
 import {planetsStore, setPlanets} from "./store";
 
 function Planets() {
     const getPlanets = async () => {
-        if (planetsStore) {
-            return planetsStore
+        if (planetsStore.list.length > 0) {
+            return planetsStore.list
         }
         const response = await fetch(`${starWarsApiBaseUrl}/planets`)
         const data = await response.json()
@@ -16,7 +16,7 @@ function Planets() {
             const id = lastPath(url)
             return {...props, id}
         })
-        setPlanets(newPlanets)
+        setPlanets({list: newPlanets})
         return newPlanets
     }
 
@@ -28,7 +28,7 @@ function Planets() {
                     <span>{planets.loading && "Chargement en cours…"}</span>
                     <h5>Liste des planètes :</h5>
                     <div className="collection">
-                        <For each={planets()}>{(planet, i) => (
+                        <For each={planets()}>{(planet) => (
                             <A class="collection-item amber lighten-4 black-text" href={`/planets/${planet.id}`}>
                                 {planet.name}
                             </A>

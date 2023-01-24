@@ -1,6 +1,6 @@
 import {createStore} from "solid-js/store";
 
-const [planetsStore, setPlanets] = createStore()
+const [planetsStore, setPlanets] = createStore({list: []})
 
 const details = {
     planets: {},
